@@ -47,7 +47,10 @@ public class FilePickerPlugin extends Plugin {
             intent.setType("*/*");
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, limit == 0);
-            if (limit == 1 && parsedTypes != null && parsedTypes.length > 0) {
+            // jaga2
+            intent.putExtra("multi-pick", limit == 0);
+            // hapus kondisi limit
+            if (parsedTypes != null && parsedTypes.length > 0) {
                 intent.putExtra(Intent.EXTRA_MIME_TYPES, parsedTypes);
             }
 
@@ -64,10 +67,14 @@ public class FilePickerPlugin extends Plugin {
         try {
             int limit = call.getInt("limit", 0);
 
-            Intent intent = new Intent(Intent.ACTION_PICK);
+            // get content aj
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            // Intent intent = new Intent(Intent.ACTION_PICK);
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, limit == 0);
             intent.setType("image/*");
             intent.putExtra("multi-pick", limit == 0);
+            // jaga2
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, limit == 0);
             intent.putExtra(Intent.EXTRA_MIME_TYPES, new String[] { "image/*" });
 
             startActivityForResult(call, intent, "pickFilesResult");
